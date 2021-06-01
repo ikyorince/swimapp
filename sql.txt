@@ -1,0 +1,195 @@
+
+
+INSERT INTO products (id, productname, CurrentQuantity) 
+          VALUES('1', 'christmas tree', '3');
+
+
+
+
+
+
+
+
+
+
+
+
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `swim_db`
+--
+CREATE DATABASE IF NOT EXISTS `swim_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `swim_db`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `productatt`
+--
+
+DROP TABLE IF EXISTS `productatt`;
+CREATE TABLE `productatt` (
+  `attributeid` int(11) NOT NULL,
+  `productId` int(11) NOT NULL,
+  `productimg` varchar(255) DEFAULT NULL,
+  `barcode` int(12) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- RELATIONSHIPS FOR TABLE `productatt`:
+--   `productId`
+--       `products` -> `productId`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE `products` (
+  `productId` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `productname` varchar(100) NOT NULL,
+  `CurrentQuantity` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- RELATIONSHIPS FOR TABLE `products`:
+--   `id`
+--       `users` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sales`
+--
+
+DROP TABLE IF EXISTS `sales`;
+CREATE TABLE `sales` (
+  `saleid` int(11) NOT NULL,
+  `productid` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `quant` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- RELATIONSHIPS FOR TABLE `sales`:
+--   `productid`
+--       `products` -> `productId`
+--   `id`
+--       `users` -> `id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONSHIPS FOR TABLE `users`:
+--
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
+(1, 'test', 'ikyorince@gmail.com', 'e10adc3949ba59abbe56e057f20f883e');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `productatt`
+--
+ALTER TABLE `productatt`
+  ADD PRIMARY KEY (`attributeid`),
+  ADD KEY `FK_productId` (`productId`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`productId`),
+  ADD KEY `FK_userID` (`id`);
+
+--
+-- Indexes for table `sales`
+--
+ALTER TABLE `sales`
+  ADD PRIMARY KEY (`saleid`),
+  ADD KEY `FK_productidsale` (`productid`),
+  ADD KEY `FK_userIDsale` (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `productatt`
+--
+ALTER TABLE `productatt`
+  MODIFY `attributeid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `sales`
+--
+ALTER TABLE `sales`
+  MODIFY `saleid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `productatt`
+--
+ALTER TABLE `productatt`
+  ADD CONSTRAINT `FK_productId` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`);
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `FK_userID` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `sales`
+--
+ALTER TABLE `sales`
+  ADD CONSTRAINT `FK_productidsale` FOREIGN KEY (`productid`) REFERENCES `products` (`productId`),
+  ADD CONSTRAINT `FK_userIDsale` FOREIGN KEY (`id`) REFERENCES `users` (`id`);
